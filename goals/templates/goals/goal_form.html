@@ -1,0 +1,16 @@
+{% extends 'goals/base.html' %}
+
+{% block content %}
+<form method="POST">{% csrf_token %}
+    {{ form }}
+    <div class="container-fluid my-5">
+        <button type="submit" class="btn btn-info">Submit</button>
+        <a href="{% url 'goals.list' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% if form.errors %}
+<div class="alert alert-danger my-5">
+    {{form.errors.title.as_text}}
+</div>
+{% endif %}
+{% endblock %}
