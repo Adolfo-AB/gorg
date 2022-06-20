@@ -12,8 +12,8 @@ class GoalForm(forms.ModelForm):
         model = Goal
         fields = ("title", "text", "timespan")
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control my-3"}),
-            "text": forms.Textarea(attrs={"class": "form-control my-3"}),
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "text": forms.Textarea(attrs={"class": "form-control"}),
         }
 
 

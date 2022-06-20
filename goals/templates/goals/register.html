@@ -1,6 +1,7 @@
 {% extends "goals/base.html" %}
 
 {% block content %}
+<div class="my-5 text-center container">
     <form method="POST" style="text-align: left; margin: 0 auto; width: 600px">
         {% csrf_token %}
         <div class="mb-3">
@@ -20,5 +21,5 @@
         </div>
         <button type="submit" class="btn btn-info my-3">Register</button>
     </form>
-
+</div>
 {% endblock %}
