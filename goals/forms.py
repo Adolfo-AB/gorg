@@ -6,11 +6,10 @@ from .models import Goal, User
 
 
 class GoalForm(forms.ModelForm):
-    timespan = forms.ChoiceField(widget=forms.TextInput(attrs={'class': "form-control mb-5"}), choices=Goal.TIMESPAN_CHOICES),
-    
+    timespan = forms.ChoiceField(widget=forms.TextInput(attrs={'class': "form-control mb-5"}), choices=Goal.Timespan.TIMESPAN_CHOICES),
     class Meta:
         model = Goal
-        fields = ("title", "text", "timespan")
+        fields = ("title", "text", "timespan",)
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "text": forms.Textarea(attrs={"class": "form-control"}),

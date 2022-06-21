@@ -17,8 +17,8 @@ class GoalListView(LoginRequiredMixin, ListView):
     login_url = "/login"
 
     def get_queryset(self):
-        return self.request.user.goals.all()
-
+        return self.request.user.goals.all()        
+        
 
 class DailyGoalListView(GoalListView):
     def get_queryset(self):
