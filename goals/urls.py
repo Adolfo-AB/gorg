@@ -1,8 +1,11 @@
 from django.urls import path
+from django.contrib import admin
 
 from . import views
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+
     path("", views.GoalListView.as_view(), name="goals.list"),
     path("goals", views.GoalListView.as_view(), name="goals.list"),
     path("goals/daily", views.DailyGoalListView.as_view(), name="daily_goals.list"),

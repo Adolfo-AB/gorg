@@ -22,22 +22,22 @@ class GoalListView(LoginRequiredMixin, ListView):
 
 class DailyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.DAILY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY)
 
 
 class WeeklyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.WEEKLY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY)
 
 
 class MonthlyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.MONTHLY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY)
 
 
 class YearlyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.YEARLY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY)
 
 
 class GoalDetailView(DetailView):
