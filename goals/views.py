@@ -21,27 +21,27 @@ class GoalListView(LoginRequiredMixin, ListView):
     login_url = "/login"
 
     def get_queryset(self):
-        return self.request.user.goals.all()        
+        return self.request.user.goals.all().order_by('-created').values()
         
 
 class DailyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).order_by('-created').values()
 
 
 class WeeklyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).order_by('-created').values()
 
 
 class MonthlyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).order_by('-created').values()
 
 
 class YearlyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY)
+        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).order_by('-created').values()
 
 
 class NonExpiredGoalListView(GoalListView):
@@ -51,27 +51,27 @@ class NonExpiredGoalListView(GoalListView):
     login_url = "/login"
 
     def get_queryset(self):
-        return self.request.user.goals.exclude(expiry__lte=datetime.now())
+        return self.request.user.goals.exclude(expiry__lte=datetime.now()).order_by('-created').values()
         
 
 class NonExpiredDailyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).exclude(expiry__lte=datetime.now())
+        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class NonExpiredWeeklyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).exclude(expiry__lte=datetime.now())
+        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class NonExpiredMonthlyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).exclude(expiry__lte=datetime.now())
+        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class NonExpiredYearlyGoalListView(GoalListView):
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).exclude(expiry__lte=datetime.now())
+        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class GoalDetailView(DetailView):
