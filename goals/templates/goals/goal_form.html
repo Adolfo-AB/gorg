@@ -20,7 +20,7 @@
                 <label for="{{ form.timespan.id_for_label }}" class="form-label">Timespan</label>
                 {{form.timespan}}
             </div>
-            <button type="submit" style="background-color: yellowgreen;" class="btn">Submit</button>
+            <button type="submit" style="background-color: yellowgreen;" class="btn text-light">Submit</button>
             <a href="{% url 'goals.list' %}" class="btn btn-secondary">Cancel</a>
         </form>
         {% if form.errors %}

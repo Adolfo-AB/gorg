@@ -11,16 +11,23 @@
                         <h5 class="card-title">{{ goal.title }}</h5>
                     </a>
                     <p class="card-text">{{goal.text|truncatechars:20}}</p>
-                    {% if goal.status == "CO" %}
-                        <h6 class="card-subtitle mb-2 text-success">Completed</h6>
+                    {% if goal.completed %}
+                        <h6 class="card-subtitle mb-2" style="color: limegreen;"><strong>Completed</strong></h6>
                     {% else %}
-                        <h6 class="card-subtitle mb-2 text-warning">In Progress</h6>
+                        <h6 class="card-subtitle mb-2" style="color: darkorange;"><strong>In Progress</strong></h6>
                     {% endif %}
                 </div>
             </div>
             {% endfor %}
         </div>
+        <div style="position:absolute; right:5%; bottom:3%;">
+            <form action="{% url 'goals.new' %}">
+                <input type="submit"  class="form-control btn btn-lg text-light me-1" style="background-color: yellowgreen" value="New">
+            </form>
+            <form action="{% url 'goals.new' %}">
+                <input type="submit"  class="form-control btn btn-lg text-light me-1" style="background-color: limegreen" value="New from Template">
+            </form>
+        </div>
     </div>
-
 {% endblock %}
 
