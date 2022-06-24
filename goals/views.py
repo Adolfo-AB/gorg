@@ -1,5 +1,7 @@
+from datetime import datetime
+
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +11,8 @@ from django.urls import reverse
 from .forms import GoalForm, UserSignUpForm, UserLoginForm
 from .models import Goal
 
+class WelcomeView(TemplateView):
+    template_name = "goals/index.html"
 
 class GoalListView(LoginRequiredMixin, ListView):
     model = Goal
@@ -38,6 +42,36 @@ class MonthlyGoalListView(GoalListView):
 class YearlyGoalListView(GoalListView):
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY)
+
+
+class NonExpiredGoalListView(GoalListView):
+    model = Goal
+    context_object_name = "goals"
+    template_name = "goals/goal_list.html"
+    login_url = "/login"
+
+    def get_queryset(self):
+        return self.request.user.goals.exclude(expiry__lte=datetime.now())
+        
+
+class NonExpiredDailyGoalListView(GoalListView):
+    def get_queryset(self):
+        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).exclude(expiry__lte=datetime.now())
+
+
+class NonExpiredWeeklyGoalListView(GoalListView):
+    def get_queryset(self):
+        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).exclude(expiry__lte=datetime.now())
+
+
+class NonExpiredMonthlyGoalListView(GoalListView):
+    def get_queryset(self):
+        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).exclude(expiry__lte=datetime.now())
+
+
+class NonExpiredYearlyGoalListView(GoalListView):
+    def get_queryset(self):
+        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).exclude(expiry__lte=datetime.now())
 
 
 class GoalDetailView(DetailView):
@@ -88,6 +122,6 @@ class LoginInterfaceView(LoginView):
     success_url = 'goals.list'
 
 class LogoutInterfaceView(LogoutView):
-    template_name = 'goals/welcome.html'
-    success_url = 'goals.list'
+    template_name = 'goals/index.html'
+    success_url = 'welcome'
 
