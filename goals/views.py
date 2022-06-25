@@ -7,6 +7,8 @@ from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from django.shortcuts import render
+
 
 from .forms import GoalForm, UserSignUpForm, UserLoginForm
 from .models import Goal
@@ -150,6 +152,16 @@ class GoalCreateView(CreateView):
         self.object.user = self.request.user
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+def create_from_unfinished(request):
+    unfinished_goals = Goal.objects.filter(expiry__lte=datetime.now())
+
+    for goal in unfinished_goals:
+        new_goal = Goal(title=goal.title, text=goal.text, timespan=goal.timespan, user=goal.user)
+        new_goal.save()
+
+    return render(request, "goals/goal_list.html")
+
 
 
 class GoalUpdateView(UpdateView):
