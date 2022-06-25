@@ -21,7 +21,7 @@
                 {{form.timespan}}
             </div>
             <button type="submit" style="background-color: yellowgreen;" class="btn text-light">Submit</button>
-            <a href="{% url 'goals.list' %}" class="btn btn-secondary">Cancel</a>
+            <a href="{% url 'active.notimespan.goals.list' %}" class="btn btn-secondary">Cancel</a>
         </form>
         {% if form.errors %}
         <div class="alert alert-danger my-5">

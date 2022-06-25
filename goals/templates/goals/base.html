@@ -17,17 +17,17 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Goals
+                                goals
                             </a>
                             <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item text-light" href="{% url 'goals.list' %}">All</a></li>
+                                <li><a class="dropdown-item text-light" href="{% url 'active.notimespan.goals.list' %}">all</a></li>
                                 <li><hr class="dropdown-divider bg-light"></li>
-                                <li><a class="dropdown-item text-light" href="{% url 'daily_goals.list' %}">Daily</a></li>
-                                <li><a class="dropdown-item text-light" href="{% url 'weekly_goals.list' %}">Weekly</a></li>
-                                <li><a class="dropdown-item text-light" href="{% url 'monthly_goals.list' %}">Monthly</a></li>
-                                <li><a class="dropdown-item text-light" href="{% url 'yearly_goals.list' %}">Yearly</a></li>
+                                <li><a class="dropdown-item text-light" href="{% url 'active.daily.goals.list' %}">daily</a></li>
+                                <li><a class="dropdown-item text-light" href="{% url 'active.weekly.goals.list' %}">weekly</a></li>
+                                <li><a class="dropdown-item text-light" href="{% url 'active.monthly.goals.list' %}">monthly</a></li>
+                                <li><a class="dropdown-item text-light" href="{% url 'active.yearly.goals.list' %}">yearly</a></li>
                                 <li><hr class="dropdown-divider bg-light"></li>
-                                <li><a class="dropdown-item" style="color: yellowgreen;" href="{% url 'goals.new' %}">New Goal</a></li>
+                                <li><a class="dropdown-item" style="color: yellowgreen;" href="{% url 'goals.new' %}">new</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -37,14 +37,14 @@
                     <ul class="navbar-nav justify-content-end">
                         {% if user.is_authenticated %}
                         <li class="nav-item ms-auto">
-                            <a class="nav-link text-light" href="{% url 'logout' %}">Log Out</a>
+                            <a class="nav-link text-light" href="{% url 'logout' %}">log out</a>
                         </li>
                         {% else %}
                         <li class="nav-item ms-right">
-                            <a class="nav-link text-light" href="{% url 'login' %}">Log In</a>
+                            <a class="nav-link text-light" href="{% url 'login' %}">log in</a>
                         </li> 
                         <li class="nav-item ms-right">
-                            <a class="nav-link text-light" href="{% url 'signup' %}">Register</a>
+                            <a class="nav-link text-light" href="{% url 'signup' %}">register</a>
                         </li>
                         {% endif %}
                     </ul>

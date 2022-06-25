@@ -2,7 +2,21 @@
 
 {% block content %}
     <div class="container">
-        <h1 class="my-5">My Goals</h1>
+        {% if goal_type != "notimespan" %}
+            <h1 class="my-5"><strong>{{goal_status}} {{goal_type}} goals</strong></h1>
+        {% else %}
+            <h1 class="my-5"><strong>{{goal_status}} goals</strong></h1>
+        {% endif %}
+        <div class="container-fluid my-2">
+            {% with goal_type as type %}
+                {% with "active."|add:type|add:".goals.list" as active %}
+                    <a class="me-2" href="{% url active %}">active</a>
+                {% endwith %}
+                {% with "all."|add:type|add:".goals.list" as all %}
+                    <a class="me-2" href="{% url all %}">all</a>
+                {% endwith %}
+            {% endwith %}
+        </div>
         <div class="row row-cols4 g-2">
             {% for goal in goals %}
             <div class="card my-2 mb-2 me-2" style="width: 18rem;">

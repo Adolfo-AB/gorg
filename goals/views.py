@@ -20,56 +20,111 @@ class GoalListView(LoginRequiredMixin, ListView):
     template_name = "goals/goal_list.html"
     login_url = "/login"
 
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "all"
+        context["goal_type"] = "notimespan"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.all().order_by('-created').values()
         
 
 class DailyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "all"
+        context["goal_type"] = "daily"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).order_by('-created').values()
 
 
 class WeeklyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "all"
+        context["goal_type"] = "weekly"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).order_by('-created').values()
 
 
 class MonthlyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "all"
+        context["goal_type"] = "monthly"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).order_by('-created').values()
 
 
 class YearlyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "all"
+        context["goal_type"] = "yearly"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).order_by('-created').values()
 
 
 class NonExpiredGoalListView(GoalListView):
-    model = Goal
-    context_object_name = "goals"
-    template_name = "goals/goal_list.html"
-    login_url = "/login"
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "active"
+        context["goal_type"] = "notimespan"
+        return context
 
     def get_queryset(self):
         return self.request.user.goals.exclude(expiry__lte=datetime.now()).order_by('-created').values()
         
 
 class NonExpiredDailyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "active"
+        context["goal_type"] = "daily"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class NonExpiredWeeklyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "active"
+        context["goal_type"] = "weekly"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class NonExpiredMonthlyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "active"
+        context["goal_type"] = "monthly"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
 
 class NonExpiredYearlyGoalListView(GoalListView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)                 
+        context["goal_status"] = "active"
+        context["goal_type"] = "yearly"
+        return context
+
     def get_queryset(self):
         return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
 
@@ -106,7 +161,7 @@ class GoalUpdateView(UpdateView):
 class SignupView(CreateView):
     form_class = UserSignUpForm
     template_name = 'goals/register.html'
-    success_url = 'goals.list'
+    success_url = 'active.notimespan.goals.list'
 
     def form_valid(self, form):
         form.save()
@@ -114,12 +169,12 @@ class SignupView(CreateView):
         password = self.request.POST['password1']
         user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'],)
         login(self.request, user)
-        return HttpResponseRedirect(reverse('goals.list'))
+        return HttpResponseRedirect(reverse('active.notimespan.goals.list'))
 
 class LoginInterfaceView(LoginView):
     form_class = UserLoginForm
     template_name = 'goals/login.html'
-    success_url = 'goals.list'
+    success_url = 'active.notimespan.goals.list'
 
 class LogoutInterfaceView(LogoutView):
     template_name = 'goals/index.html'
