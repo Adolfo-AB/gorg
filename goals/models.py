@@ -27,7 +27,9 @@ class Goal(models.Model):
 
     def save(self, *args, **kwargs):
         now = datetime.now()
-        self.created = now
+
+        if not self.created:
+            self.created = now
 
         if self.timespan == self.Timespan.DAILY:
             self.expiry = (now + timedelta(days=1)).replace(hour=00, minute=00, second=00, microsecond=00)

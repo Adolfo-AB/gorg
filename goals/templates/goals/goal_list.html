@@ -3,9 +3,9 @@
 {% block content %}
     <div class="container">
         {% if goal_type != "notimespan" %}
-            <h1 class="my-5"><strong>{{goal_status}} {{goal_type}} goals</strong></h1>
+            <h1 class="my-5"><strong>{{goal_status}} {{goal_type}} goals - {{percent}}% completed</strong></h1>
         {% else %}
-            <h1 class="my-5"><strong>{{goal_status}} goals</strong></h1>
+            <h1 class="my-5"><strong>{{goal_status}} goals - {{percent}}% completed</strong></h1>
         {% endif %}
         <div class="container-fluid my-2">
             {% with goal_type as type %}
@@ -26,24 +26,40 @@
                     </a>
                     <p class="card-text">{{goal.text|truncatechars:20}}</p>
                     {% if goal.completed %}
-                        <h6 class="card-subtitle mb-2" style="color: limegreen;"><strong>Completed</strong></h6>
+                        <h6 class="card-subtitle mb-2" style="color: green;"><strong>Completed</strong></h6>
                     {% else %}
-                        <h6 class="card-subtitle mb-2" style="color: darkorange;"><strong>In Progress</strong></h6>
+                        <h6 class="card-subtitle mb-2" style="color: orangered;"><strong>In Progress</strong></h6>
                     {% endif %}
                 </div>
-               <div class="card-body fs-6">
-                    <a class="me-2" href="{% url 'goals.delete' pk=goal.id%}">complete</a>
-                    <a class="me-2" href="{% url 'goals.delete' pk=goal.id%}">delete</a>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            {% if goal.completed %}
+                                <form action="{% url 'goals.uncomplete' pk=goal.id%}" method="POST">
+                                {% csrf_token %}
+                                    <input type="submit" class="form-control btn btn-outline-dark btn-sm" value="uncomplete">
+                                </form>
+                            {% else %}
+                            <form action="{% url 'goals.complete' pk=goal.id %}" method="POST">
+                            {% csrf_token %}
+                                <input type="submit" class="form-control btn btn-outline-dark btn-sm" value="complete">
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="col">   
+                            <form action="{% url 'goals.delete' pk=goal.id%}" method="POST">
+                                {% csrf_token %}
+                                <input type="submit" class="form-control btn btn-outline-danger btn-sm" value="delete">
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
         <div style="position:absolute; right:5%; bottom:3%;">
             <form action="{% url 'goals.new' %}">
-                <input type="submit"  class="form-control btn btn-lg text-light me-1" style="background-color: yellowgreen" value="New">
-            </form>
-            <form action="{% url 'goals.new' %}">
-                <input type="submit"  class="form-control btn btn-lg text-light me-1" style="background-color: limegreen" value="New from Template">
+                <input type="submit"  class="form-control btn btn-outline-dark me-1" value="new">
             </form>
         </div>
     </div>

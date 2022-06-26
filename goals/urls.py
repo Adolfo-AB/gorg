@@ -26,7 +26,8 @@ urlpatterns = [
 
     path("goals/new", views.GoalCreateView.as_view(), name="goals.new"),
     path("goals/<int:pk>", views.GoalUpdateView.as_view(), name="goals.update"),
-    path("goals/<int:pk>/complete", views.GoalCompleteView.as_view(), name="goals.complete"),
+    path("goals/<int:pk>/complete", views.complete, name="goals.complete"),
+    path("goals/<int:pk>/uncomplete", views.uncomplete, name="goals.uncomplete"),
     path("goals/<int:pk>/delete", views.GoalDeleteView.as_view(), name="goals.delete"),
 
     path('signup', views.SignupView.as_view(), name='signup'),
