@@ -1,7 +1,13 @@
 from datetime import datetime
 
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
-from django.views.generic import CreateView, DetailView, ListView, UpdateView, TemplateView
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    ListView,
+    UpdateView,
+    TemplateView,
+)
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,8 +20,10 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import GoalForm, UserSignUpForm, UserLoginForm
 from .models import Goal
 
+
 class WelcomeView(TemplateView):
     template_name = "goals/index.html"
+
 
 class GoalListView(LoginRequiredMixin, ListView):
     model = Goal
@@ -23,8 +31,8 @@ class GoalListView(LoginRequiredMixin, ListView):
     template_name = "goals/goal_list.html"
     login_url = "/login"
 
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "all"
         context["goal_type"] = "notimespan"
 
@@ -32,91 +40,131 @@ class GoalListView(LoginRequiredMixin, ListView):
         completed_goals = len(self.request.user.goals.filter(completed=True).values())
 
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
 
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.all().order_by('-created').values()
-        
+        return self.request.user.goals.all().order_by("-created").values()
+
 
 class DailyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "all"
         context["goal_type"] = "daily"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.DAILY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.DAILY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
-            context["percent"] = 0        
+            context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.DAILY)
+            .order_by("-created")
+            .values()
+        )
 
 
 class WeeklyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "all"
         context["goal_type"] = "weekly"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.WEEKLY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.WEEKLY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY)
+            .order_by("-created")
+            .values()
+        )
 
 
 class MonthlyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "all"
         context["goal_type"] = "monthly"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.MONTHLY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.MONTHLY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY)
+            .order_by("-created")
+            .values()
+        )
 
 
 class YearlyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "all"
         context["goal_type"] = "yearly"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.YEARLY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.YEARLY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY)
+            .order_by("-created")
+            .values()
+        )
 
 
 class NonExpiredGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "active"
         context["goal_type"] = "notimespan"
 
@@ -124,91 +172,140 @@ class NonExpiredGoalListView(GoalListView):
         all_goals = len(self.request.user.goals.filter(completed=True).values())
 
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
 
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.exclude(expiry__lte=datetime.now()).order_by('-created').values()
-        
+        return (
+            self.request.user.goals.exclude(expiry__lte=datetime.now())
+            .order_by("-created")
+            .values()
+        )
+
 
 class NonExpiredDailyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "active"
         context["goal_type"] = "daily"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.DAILY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.DAILY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.DAILY)
+            .exclude(expiry__lte=datetime.now())
+            .order_by("-created")
+            .values()
+        )
 
 
 class NonExpiredWeeklyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "active"
         context["goal_type"] = "weekly"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.WEEKLY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.WEEKLY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY)
+            .exclude(expiry__lte=datetime.now())
+            .order_by("-created")
+            .values()
+        )
 
 
 class NonExpiredMonthlyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "active"
         context["goal_type"] = "monthly"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.MONTHLY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.MONTHLY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY)
+            .exclude(expiry__lte=datetime.now())
+            .order_by("-created")
+            .values()
+        )
 
 
 class NonExpiredYearlyGoalListView(GoalListView):
-    def get_context_data(self, **kwargs):          
-        context = super().get_context_data(**kwargs)                 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["goal_status"] = "active"
         context["goal_type"] = "yearly"
 
-        completed_goals = len(self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).values())
-        all_goals = len(self.request.user.goals.filter(completed=True, timespan=Goal.Timespan.YEARLY).values())
+        completed_goals = len(
+            self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).values()
+        )
+        all_goals = len(
+            self.request.user.goals.filter(
+                completed=True, timespan=Goal.Timespan.YEARLY
+            ).values()
+        )
         if all_goals > 0:
-            context["percent"] = int((completed_goals/all_goals)*100)
+            context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
         return context
 
     def get_queryset(self):
-        return self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).exclude(expiry__lte=datetime.now()).order_by('-created').values()
+        return (
+            self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY)
+            .exclude(expiry__lte=datetime.now())
+            .order_by("-created")
+            .values()
+        )
 
 
 class GoalDetailView(DetailView):
     model = Goal
     context_object_name = "goal"
+
 
 @csrf_exempt
 def complete(request, pk):
@@ -252,23 +349,27 @@ class GoalUpdateView(UpdateView):
 
 class SignupView(CreateView):
     form_class = UserSignUpForm
-    template_name = 'goals/register.html'
-    success_url = 'active.notimespan.goals.list'
+    template_name = "goals/register.html"
+    success_url = "active.notimespan.goals.list"
 
     def form_valid(self, form):
         form.save()
-        username = self.request.POST['username']
-        password = self.request.POST['password1']
-        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'],)
+        username = self.request.POST["username"]
+        password = self.request.POST["password1"]
+        user = authenticate(
+            username=form.cleaned_data["username"],
+            password=form.cleaned_data["password1"],
+        )
         login(self.request, user)
-        return HttpResponseRedirect(reverse('active.notimespan.goals.list'))
+        return HttpResponseRedirect(reverse("active.notimespan.goals.list"))
+
 
 class LoginInterfaceView(LoginView):
     form_class = UserLoginForm
-    template_name = 'goals/login.html'
-    success_url = 'active.notimespan.goals.list'
+    template_name = "goals/login.html"
+    success_url = "active.notimespan.goals.list"
+
 
 class LogoutInterfaceView(LogoutView):
-    template_name = 'goals/index.html'
-    success_url = 'welcome'
-
+    template_name = "goals/index.html"
+    success_url = "welcome"

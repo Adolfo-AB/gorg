@@ -19,7 +19,9 @@ class Goal(models.Model):
 
     title = models.CharField(max_length=200)
     text = models.TextField(blank=True, default="")
-    timespan = models.CharField(choices=Timespan.TIMESPAN_CHOICES, default=Timespan.DAILY, max_length=2)
+    timespan = models.CharField(
+        choices=Timespan.TIMESPAN_CHOICES, default=Timespan.DAILY, max_length=2
+    )
     created = models.DateTimeField(default=None, blank=True, null=True)
     expiry = models.DateTimeField(default=None, blank=True, null=True)
     completed = models.BooleanField(default=False)
@@ -32,13 +34,21 @@ class Goal(models.Model):
             self.created = now
 
         if self.timespan == self.Timespan.DAILY:
-            self.expiry = (now + timedelta(days=1)).replace(hour=00, minute=00, second=00, microsecond=00)
+            self.expiry = (now + timedelta(days=1)).replace(
+                hour=00, minute=00, second=00, microsecond=00
+            )
         if self.timespan == self.Timespan.WEEKLY:
-            self.expiry = (now + + timedelta((-1-self.created.weekday())%7+1)).replace(hour=00, minute=00, second=00, microsecond=00)
+            self.expiry = (
+                now + +timedelta((-1 - self.created.weekday()) % 7 + 1)
+            ).replace(hour=00, minute=00, second=00, microsecond=00)
         if self.timespan == self.Timespan.MONTHLY:
-            self.expiry = (now.replace(day=1) + timedelta(days=32)).replace(day=1).replace(hour=00, minute=00, second=00, microsecond=00)
+            self.expiry = (
+                (now.replace(day=1) + timedelta(days=32))
+                .replace(day=1)
+                .replace(hour=00, minute=00, second=00, microsecond=00)
+            )
         if self.timespan == self.Timespan.YEARLY:
-            self.expiry = datetime(year=now.year+1, month=1, day=1)
+            self.expiry = datetime(year=now.year + 1, month=1, day=1)
 
         super(Goal, self).save(*args, **kwargs)
 
