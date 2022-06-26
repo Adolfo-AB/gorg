@@ -26,10 +26,10 @@
                                 <li><a class="dropdown-item text-light" href="{% url 'active.weekly.goals.list' %}">weekly</a></li>
                                 <li><a class="dropdown-item text-light" href="{% url 'active.monthly.goals.list' %}">monthly</a></li>
                                 <li><a class="dropdown-item text-light" href="{% url 'active.yearly.goals.list' %}">yearly</a></li>
-                                <li><hr class="dropdown-divider bg-light"></li>
-                                <li><a class="dropdown-item" style="color: yellowgreen;" href="{% url 'goals.new' %}">new</a></li>
                             </ul>
                         </li>
+                        <a class="nav-link active" aria-current="page" href="{% url 'goals.new' %}" style="color: yellowgreen;">new</a>
+
                     </ul>
                     {% endif %}
                 </div>
