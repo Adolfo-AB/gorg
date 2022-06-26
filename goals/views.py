@@ -36,10 +36,10 @@ class GoalListView(LoginRequiredMixin, ListView):
         context["goal_status"] = "all"
         context["goal_type"] = "notimespan"
 
-        all_goals = len(self.request.user.goals.all().values())
-        completed_goals = len(self.request.user.goals.filter(completed=True).values())
+        completed_goals = len(self.request.user.goals.all().values())
+        all_goals = len(self.request.user.goals.filter(completed=True).values())
 
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -56,15 +56,15 @@ class DailyGoalListView(GoalListView):
         context["goal_status"] = "all"
         context["goal_type"] = "daily"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.DAILY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -84,15 +84,15 @@ class WeeklyGoalListView(GoalListView):
         context["goal_status"] = "all"
         context["goal_type"] = "weekly"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.WEEKLY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -112,15 +112,15 @@ class MonthlyGoalListView(GoalListView):
         context["goal_status"] = "all"
         context["goal_type"] = "monthly"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.MONTHLY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -140,15 +140,15 @@ class YearlyGoalListView(GoalListView):
         context["goal_status"] = "all"
         context["goal_type"] = "yearly"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.YEARLY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -168,10 +168,10 @@ class NonExpiredGoalListView(GoalListView):
         context["goal_status"] = "active"
         context["goal_type"] = "notimespan"
 
-        completed_goals = len(self.request.user.goals.all().values())
-        all_goals = len(self.request.user.goals.filter(completed=True).values())
+        all_goals = len(self.request.user.goals.all().values())
+        completed_goals = len(self.request.user.goals.filter(completed=True).values())
 
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -192,15 +192,15 @@ class NonExpiredDailyGoalListView(GoalListView):
         context["goal_status"] = "active"
         context["goal_type"] = "daily"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.DAILY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.DAILY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -221,15 +221,15 @@ class NonExpiredWeeklyGoalListView(GoalListView):
         context["goal_status"] = "active"
         context["goal_type"] = "weekly"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.WEEKLY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.WEEKLY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -250,15 +250,15 @@ class NonExpiredMonthlyGoalListView(GoalListView):
         context["goal_status"] = "active"
         context["goal_type"] = "monthly"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.MONTHLY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.MONTHLY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
@@ -279,15 +279,15 @@ class NonExpiredYearlyGoalListView(GoalListView):
         context["goal_status"] = "active"
         context["goal_type"] = "yearly"
 
-        completed_goals = len(
+        all_goals = len(
             self.request.user.goals.filter(timespan=Goal.Timespan.YEARLY).values()
         )
-        all_goals = len(
+        completed_goals = len(
             self.request.user.goals.filter(
                 completed=True, timespan=Goal.Timespan.YEARLY
             ).values()
         )
-        if all_goals > 0:
+        if completed_goals > 0:
             context["percent"] = int((completed_goals / all_goals) * 100)
         else:
             context["percent"] = 0
