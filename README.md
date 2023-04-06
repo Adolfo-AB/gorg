@@ -1,5 +1,5 @@
 # Gorg
-Gorg is a goal manager - a to-do list on steroids. It was done as a toy project in order to learn some Django, HTML and CSS (Bootstrap).
+A task manager. It was done as a toy project in order to learn some Django, HTML and CSS (Bootstrap).
 
 ![sample screenshot](sample.png)
 
